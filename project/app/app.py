@@ -7,8 +7,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-nltk.download("stopwords")
-nltk.download('punkt')
+#nltk.download("stopwords")
+#nltk.download('punkt')
 
 # Loading the data
 df = pd.read_csv("project/app/games_dataset_clean.csv")
