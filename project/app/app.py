@@ -129,23 +129,21 @@ if st.button("Show Platform distribution"):
 df_nlp = pd.read_csv("project/app/bag_of_words.csv")
 
 count = CountVectorizer()
-
 count_matrix = count.fit_transform(df_nlp['Bag_of_words'])
-cosine_sim = cosine_similarity(count_matrix, count_matrix)
-print(cosine_sim)
-
-indices = pd.Series(df_nlp['name'])
 
 
-def recommend(title, cosine_sim=cosine_sim):
+def recommend(title, df_nlp=df_nlp, count_matrix=count_matrix):
+    # Calculate cosine similarity dynamically
+    idx = df_nlp[df_nlp['name'] == title].index[0]
+    cosine_sim = cosine_similarity(count_matrix[idx], count_matrix).flatten()
+
+    # Get top 10 indices
+    top_10_indices = cosine_sim.argsort()[:-11:-1]
+
     recommended_games = []
-    idx = indices[indices == title].index[0]
-    score_series = pd.Series(cosine_sim[idx]).sort_values(ascending=False)
-    top_10_indices = list(score_series.iloc[1:11].index)
-
     for i in top_10_indices:
-        game_name = list(df_nlp['name'])[i]
-        game_platform = list(df_nlp['platform'])[i]
+        game_name = df_nlp['name'].iloc[i]
+        game_platform = df_nlp['platform'].iloc[i]
         recommended_games.append(f"{game_name} ({game_platform})")
 
     return recommended_games
