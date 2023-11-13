@@ -1,14 +1,9 @@
 import streamlit as st
 import pandas as pd
-import nltk
-from rake_nltk import Rake
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 import seaborn as sns
 import matplotlib.pyplot as plt
-
-nltk.download("stopwords")
-nltk.download('punkt')
 
 # Loading the data
 df = pd.read_csv("project/app/games_dataset_clean.csv")
@@ -129,55 +124,9 @@ def generate_platform_distribution():
 if st.button("Show Platform distribution"):
     generate_platform_distribution()
 
-# Feature Engineering
+# Model load
 
-df_nlp = df.copy()
-
-df_nlp['Key_words'] = ''
-df_nlp['summary'].fillna('', inplace=True)
-
-r = Rake()
-
-for index, row in df_nlp.iterrows():
-    r.extract_keywords_from_text(row['summary'])
-    key_words_dict_scores = r.get_word_degrees()
-    df_nlp.at[index, 'Key_words'] = list(key_words_dict_scores.keys())
-
-df_nlp['platform_lower'] = df_nlp['platform'].str.lower().str.replace(' ', '')
-df_nlp['developer'] = df_nlp['developer'].str.lower().str.replace(' ', '')
-df_nlp['genre(s)'] = df_nlp['genre(s)'].str.lower().str.replace(' ', '')
-df_nlp['multiplayer'] = df_nlp['multiplayer'].str.lower().str.replace(' ', '')
-
-df_nlp["release_year"] = df_nlp["release_year"].astype(str)
-
-
-def update_key_words(x):
-    key_words = x['Key_words']
-    platform = x['platform_lower']
-    year = x['release_year']
-    developer = x['developer']
-    genre = x['genre(s)']
-    # multiplayer = x['multiplayer']
-
-    key_words.append(platform)
-    key_words.append(year)
-    key_words.append(developer)
-    key_words.append(genre)
-    # key_words.append(multiplayer)
-
-    return key_words
-
-
-df_nlp['Key_words'] = df_nlp.apply(update_key_words, axis=1)
-
-
-def join_list_to_string(lst):
-    return ' '.join(lst)
-
-
-df_nlp['Bag_of_words'] = df_nlp['Key_words'].apply(join_list_to_string)
-
-df_nlp = df_nlp[['name', 'platform', 'Bag_of_words']]
+df_nlp = pd.read_csv("project/app/bag_of_words.csv")
 
 count = CountVectorizer()
 
@@ -201,8 +150,6 @@ def recommend(title, cosine_sim=cosine_sim):
 
     return recommended_games
 
-
-# Feature Engineering End
 
 # Search Bar
 
