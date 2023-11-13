@@ -1,10 +1,13 @@
 import streamlit as st
 import pandas as pd
+import nltk
 from rake_nltk import Rake
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 import seaborn as sns
 import matplotlib.pyplot as plt
+
+nltk.download("stopwords")
 
 # Loading the data
 df = pd.read_csv("project/app/games_dataset_clean.csv")
