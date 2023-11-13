@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Loading the data
-df = pd.read_csv("./games_dataset_clean.csv")
+df = pd.read_csv("project/app/games_dataset_clean.csv")
 column_order = ['name', 'platform', 'release_year', 'genre(s)', 'score', 'opinion', 'developer', 'publisher', 'summary',
                 'multiplayer', 'rating', 'link']
 df = df[column_order]
