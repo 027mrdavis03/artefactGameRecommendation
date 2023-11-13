@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 
 # Loading the data
 df = pd.read_csv("games_dataset_clean.csv")
-column_order = ['name','platform','release_year','genre(s)','score','opinion','developer','publisher','summary','multiplayer','rating','link']
+column_order = ['name', 'platform', 'release_year', 'genre(s)', 'score', 'opinion', 'developer', 'publisher', 'summary',
+                'multiplayer', 'rating', 'link']
 df = df[column_order]
 
 # Page Layout
@@ -40,7 +41,6 @@ genre = st.sidebar.multiselect(
     options=df["genre(s)"].unique(),
     default=df["genre(s)"].unique()
 )
-
 
 df_selection = df.query(
     "(platform == @console) & (release_year == @year) & (`genre(s)` == @genre)"
@@ -153,13 +153,13 @@ def update_key_words(x):
     year = x['release_year']
     developer = x['developer']
     genre = x['genre(s)']
-    multiplayer = x['multiplayer']
+    # multiplayer = x['multiplayer']
 
     key_words.append(platform)
     key_words.append(year)
     key_words.append(developer)
     key_words.append(genre)
-    key_words.append(multiplayer)
+    # key_words.append(multiplayer)
 
     return key_words
 
