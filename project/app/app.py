@@ -7,9 +7,6 @@ from sklearn.feature_extraction.text import CountVectorizer
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-st.set_option('server.headless', True)
-st.set_option('server.port', 8501)
-
 nltk.download("stopwords")
 nltk.download('punkt')
 
